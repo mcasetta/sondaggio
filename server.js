@@ -13,7 +13,7 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin2024';
 const PORT = process.env.PORT || 3000;
 
 // ── In-memory state ──────────────────────────────────────────────────────────
-// participants: pid -> { nickname, answers: Map<questionNumber, 'A'|'B'|'C'|'D'> }
+// participants: pid -> { nickname, role, answers: Map<questionNumber, 'A'|'B'|'C'|'D'> }
 const participants = new Map();
 const adminSockets = new Set();
 let currentSlide = 0;
@@ -28,7 +28,8 @@ const slides = [
   {
     type: 'survey',
     number: 1,
-    question: 'Quando tuo figlio/un ragazzo fa qualcosa di sbagliato…',
+    question_genitore: 'Quando tuo figlio fa qualcosa di sbagliato…',
+    question_animatore: 'Quando un ragazzo fa qualcosa di sbagliato…',
     options: {
       A: 'Spiego con calma e cerco di capire il motivo',
       B: 'Ne parlo come se fossimo amici',
@@ -39,7 +40,8 @@ const slides = [
   {
     type: 'survey',
     number: 2,
-    question: 'Le regole in casa/oratorio…',
+    question_genitore: 'Le regole in casa…',
+    question_animatore: 'Le regole in oratorio…',
     options: {
       A: 'Sono chiare ma adattabili',
       B: 'Sono poche, privilegio il dialogo',
@@ -50,7 +52,8 @@ const slides = [
   {
     type: 'survey',
     number: 3,
-    question: 'Quando tuo figlio/un ragazzo è in difficoltà…',
+    question_genitore: 'Quando tuo figlio è in difficoltà…',
+    question_animatore: 'Quando un ragazzo è in difficoltà…',
     options: {
       A: 'Lo accompagno senza sostituirmi',
       B: 'Cerco di stargli vicino emotivamente',
@@ -61,7 +64,8 @@ const slides = [
   {
     type: 'survey',
     number: 4,
-    question: 'Il dialogo con i figli/ragazzi…',
+    question_genitore: 'Il dialogo con i figli…',
+    question_animatore: 'Il dialogo con i ragazzi…',
     options: {
       A: 'È importante ma con ruoli chiari',
       B: 'È centrale, voglio essere un punto di riferimento amico',
@@ -72,7 +76,8 @@ const slides = [
   {
     type: 'survey',
     number: 5,
-    question: 'Il tuo obiettivo come genitore/educatore è…',
+    question_genitore: 'Il tuo obiettivo come genitore è…',
+    question_animatore: 'Il tuo obiettivo come educatore è…',
     options: {
       A: 'Educare alla libertà responsabile',
       B: 'Costruire una relazione forte',
@@ -192,11 +197,13 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('join', ({ nickname, participantId }, cb) => {
+  socket.on('join', ({ nickname, role, participantId }, cb) => {
     if (!participants.has(participantId)) {
-      participants.set(participantId, { nickname, answers: new Map() });
+      participants.set(participantId, { nickname, role, answers: new Map() });
     } else {
-      participants.get(participantId).nickname = nickname;
+      const p = participants.get(participantId);
+      p.nickname = nickname;
+      p.role = role;
     }
     const p = participants.get(participantId);
     const answers = Array.from(p.answers.entries()).map(([questionNumber, answer]) => ({ questionNumber, answer }));

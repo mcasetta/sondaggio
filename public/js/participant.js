@@ -15,6 +15,7 @@ const PID = (() => {
 const state = {
   joined: false,
   nickname: sessionStorage.getItem('sondaggio_nick') || '',
+  role: sessionStorage.getItem('sondaggio_role') || '',
   currentSlide: 0,
   slides: [],
   answers: {},   // { [questionNumber]: 'A'|'B'|'C'|'D' }
@@ -29,6 +30,7 @@ const screens = {
 };
 const $ = id => document.getElementById(id);
 const nicknameInput = $('nickname-input');
+const roleInput     = $('role-input');
 const joinBtn       = $('join-btn');
 const joinError     = $('join-error');
 const slideContainer = $('slide-container');
@@ -44,19 +46,26 @@ function showScreen(name) {
 // ── Join ─────────────────────────────────────────────────────────────────────
 function joinSession() {
   const nickname = nicknameInput.value.trim();
+  const role = roleInput.value;
   if (!nickname) {
     joinError.textContent = 'Inserisci un nome per continuare.';
     nicknameInput.focus();
     return;
   }
+  if (!role) {
+    joinError.textContent = 'Scegli se sei genitore o animatore.';
+    return;
+  }
   joinBtn.disabled = true;
   joinBtn.textContent = 'Connessione…';
 
-  socket.emit('join', { nickname, participantId: PID }, (res) => {
+  socket.emit('join', { nickname, role, participantId: PID }, (res) => {
     if (res?.success) {
       state.nickname = nickname;
+      state.role = role;
       state.joined = true;
       sessionStorage.setItem('sondaggio_nick', nickname);
+      sessionStorage.setItem('sondaggio_role', role);
       for (const a of res.answers) {
         state.answers[a.questionNumber] = a.answer;
       }
@@ -112,6 +121,7 @@ function renderSurveySlide(slide) {
   const myAnswer = state.answers[slide.number];
   const answered = !!myAnswer;
   const colors = { A: 'var(--a)', B: 'var(--b)', C: 'var(--c)', D: 'var(--d)' };
+  const question = state.role === 'animatore' ? slide.question_animatore : slide.question_genitore;
 
   const optHtml = Object.entries(slide.options).map(([letter, text]) => {
     const selected = myAnswer === letter;
@@ -132,7 +142,7 @@ function renderSurveySlide(slide) {
   return `
     <div class="slide-survey">
       <div class="question-number">Domanda ${slide.number} di 5</div>
-      <h2 class="question-text">${escHtml(slide.question)}</h2>
+      <h2 class="question-text">${escHtml(question)}</h2>
       <div class="options-grid">${optHtml}</div>
       ${answered ? '<div class="answered-msg">✓ Risposta salvata!</div>' : ''}
     </div>`;
@@ -243,8 +253,12 @@ socket.on('results-update', (data) => {
 socket.on('session-reset', () => {
   state.answers = {};
   state.joined = false;
+  state.role = '';
   state.currentSlide = 0;
   sessionStorage.removeItem('sondaggio_nick');
+  sessionStorage.removeItem('sondaggio_role');
+  roleInput.value = '';
+  document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('selected'));
   joinBtn.disabled = false;
   joinBtn.textContent = 'Entra →';
   showScreen('join');
@@ -265,8 +279,19 @@ socket.on('connect', () => {
 joinBtn.addEventListener('click', joinSession);
 nicknameInput.addEventListener('keydown', e => { if (e.key === 'Enter') joinSession(); });
 
-if (state.nickname) {
-  nicknameInput.value = state.nickname;
+document.querySelectorAll('.role-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    roleInput.value = btn.dataset.role;
+    joinError.textContent = '';
+  });
+});
+
+if (state.nickname) nicknameInput.value = state.nickname;
+if (state.role) {
+  roleInput.value = state.role;
+  document.querySelector(`.role-btn[data-role="${state.role}"]`)?.classList.add('selected');
 }
 
 // ── Utilities ─────────────────────────────────────────────────────────────────
