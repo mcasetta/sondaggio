@@ -163,15 +163,15 @@ function renderResultsSlide(slide) {
   const profile = dominant ? slide.profiles[dominant] : null;
 
   const personalHtml = profile ? `
-    <div class="result-profile" style="--profile-color:${colors[dominant]}">
-      <div class="profile-emoji">${profile.emoji}</div>
-      <div class="profile-name">${profile.name}</div>
-      <p class="profile-desc">${escHtml(profile.description)}</p>
+    <div class="result-profile" id="rp-box" style="--profile-color:${colors[dominant]}">
+      <div class="profile-emoji" id="rp-emoji">${profile.emoji}</div>
+      <div class="profile-name" id="rp-name">${profile.name}</div>
+      <p class="profile-desc" id="rp-desc">${escHtml(profile.description)}</p>
       <div class="my-tally">
         ${Object.entries(myCounts).map(([l, c]) => `
-          <span class="tally-item${dominant === l ? ' tally-dominant' : ''}" style="--tc:${colors[l]}">
+          <button class="tally-item${dominant === l ? ' tally-dominant' : ''}" style="--tc:${colors[l]}" data-letter="${l}">
             <b>${l}</b>&nbsp;${c}
-          </span>`).join('')}
+          </button>`).join('')}
       </div>
     </div>` : `
     <div class="result-profile">
@@ -241,14 +241,33 @@ function renderResultsSlide(slide) {
 
 // ── Event handlers ────────────────────────────────────────────────────────────
 function attachHandlers(slide) {
-  if (slide.type !== 'survey') return;
-  slideContainer.querySelectorAll('.option-btn:not([disabled])').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const letter = btn.dataset.letter;
-      const qNum = parseInt(btn.dataset.question, 10);
-      submitAnswer(qNum, letter);
+  if (slide.type === 'survey') {
+    slideContainer.querySelectorAll('.option-btn:not([disabled])').forEach(btn => {
+      btn.addEventListener('click', () => {
+        submitAnswer(parseInt(btn.dataset.question, 10), btn.dataset.letter);
+      });
     });
-  });
+  } else if (slide.type === 'results') {
+    const profileColors = { A: 'var(--a)', B: 'var(--b)', C: 'var(--c)', D: 'var(--d)' };
+    const rpBox   = document.getElementById('rp-box');
+    const rpEmoji = document.getElementById('rp-emoji');
+    const rpName  = document.getElementById('rp-name');
+    const rpDesc  = document.getElementById('rp-desc');
+    if (!rpBox) return;
+    slideContainer.querySelectorAll('.tally-item').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const l = btn.dataset.letter;
+        const p = slide.profiles[l];
+        rpEmoji.textContent = p.emoji;
+        rpName.textContent  = p.name;
+        rpDesc.textContent  = p.description;
+        rpBox.style.setProperty('--profile-color', profileColors[l]);
+        slideContainer.querySelectorAll('.tally-item').forEach(b =>
+          b.classList.toggle('tally-dominant', b.dataset.letter === l)
+        );
+      });
+    });
+  }
 }
 
 function submitAnswer(questionNumber, answer) {

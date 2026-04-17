@@ -379,6 +379,13 @@ button:disabled { opacity: 0.55; cursor: not-allowed; }
   border: 2px solid var(--tc, var(--border));
   font-size: 0.9rem;
   color: var(--tc, var(--text));
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.tally-item:hover {
+  background: color-mix(in srgb, var(--tc, var(--primary)) 15%, transparent);
 }
 
 .tally-item.tally-dominant {
