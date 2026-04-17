@@ -148,6 +148,10 @@ function broadcastResults() {
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
 app.post('/api/admin/login', (req, res) => {
   res.json({ success: req.body.password === ADMIN_PASSWORD });
 });
