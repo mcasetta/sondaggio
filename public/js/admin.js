@@ -69,6 +69,12 @@ function doLogin() {
 loginBtn.addEventListener('click', doLogin);
 adminPwd.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 
+// ── Version ───────────────────────────────────────────────────────────────────
+fetch('/api/version').then(r => r.json()).then(d => {
+  const el = document.getElementById('version-badge');
+  if (el) el.textContent = 'v ' + d.version;
+}).catch(() => {});
+
 // ── QR Code ───────────────────────────────────────────────────────────────────
 async function loadQRCode() {
   try {

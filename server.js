@@ -10,6 +10,7 @@ const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' } });
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin2024';
+const APP_VERSION = '2026-04-17 21:00';
 const PORT = process.env.PORT || 3000;
 
 // ── In-memory state ──────────────────────────────────────────────────────────
@@ -146,6 +147,8 @@ app.get('/admin', (req, res) => {
 app.post('/api/admin/login', (req, res) => {
   res.json({ success: req.body.password === ADMIN_PASSWORD });
 });
+
+app.get('/api/version', (req, res) => res.json({ version: APP_VERSION }));
 
 app.get('/api/qrcode', async (req, res) => {
   const url = process.env.APP_URL || `${req.protocol}://${req.get('host')}`;
