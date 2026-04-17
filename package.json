@@ -1,0 +1,17 @@
+{
+  "name": "sondaggio-genitore",
+  "version": "1.0.0",
+  "description": "Questionario interattivo: Che tipo di genitore sei?",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "qrcode": "^1.5.3",
+    "socket.io": "^4.7.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

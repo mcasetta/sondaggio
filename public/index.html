@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Che tipo di genitore sei?</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- Progress bar -->
+<div class="progress-bar-wrap">
+  <div class="progress-bar-fill" id="progress-bar" style="width: 0%"></div>
+</div>
+
+<!-- ── Join screen ──────────────────────────────────────────────────── -->
+<div id="screen-join" class="join-screen">
+  <div class="card join-card">
+    <div class="join-logo">👨‍👩‍👧</div>
+    <h1 class="join-title">Che tipo di genitore sei?</h1>
+    <p class="join-subtitle">Entra con un nome per partecipare al sondaggio</p>
+
+    <div class="form-group">
+      <label for="nickname-input">Il tuo nome</label>
+      <input
+        type="text"
+        id="nickname-input"
+        placeholder="es. Marco, Silvia…"
+        maxlength="30"
+        autocomplete="off"
+        spellcheck="false"
+      >
+    </div>
+
+    <button class="btn-primary" id="join-btn">Entra →</button>
+    <p class="error-msg" id="join-error"></p>
+  </div>
+</div>
+
+<!-- ── Main screen ──────────────────────────────────────────────────── -->
+<div id="screen-main" class="main-screen hidden">
+  <header class="main-header">
+    <span class="app-name">👨‍👩‍👧 Sondaggio</span>
+    <span class="slide-counter" id="slide-counter"></span>
+  </header>
+  <div class="slide-area" id="slide-container">
+    <div class="waiting-msg">
+      <span class="w-emoji">⏳</span>
+      <p>In attesa dell'inizio…</p>
+    </div>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/participant.js"></script>
+</body>
+</html>

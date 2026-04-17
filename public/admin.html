@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin – Sondaggio Genitore</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="admin-body">
+
+<!-- ── Login ──────────────────────────────────────────────────────────── -->
+<div id="admin-login" class="admin-login-screen">
+  <div class="admin-login-card">
+    <h1>🔑 Pannello Presenter</h1>
+    <p>Accedi per controllare il sondaggio</p>
+    <input type="password" id="admin-pwd" placeholder="Password" autocomplete="current-password">
+    <button class="btn-primary" id="admin-login-btn" style="border-radius:10px">Accedi</button>
+    <p class="error-msg" id="admin-error"></p>
+  </div>
+</div>
+
+<!-- ── Dashboard ──────────────────────────────────────────────────────── -->
+<div id="admin-dashboard" class="admin-dashboard">
+
+  <!-- Top bar -->
+  <div class="admin-topbar">
+    <span id="conn-dot" class="status-dot"></span>
+    <h1>Sondaggio – Che tipo di genitore sei?</h1>
+    <span class="badge" id="slide-badge">Slide 1 / 7</span>
+    <span class="badge green" id="part-badge">0 partecipanti</span>
+  </div>
+
+  <!-- Main grid -->
+  <div class="admin-main">
+
+    <!-- Left panel -->
+    <div class="admin-left">
+
+      <!-- Slide control -->
+      <div class="admin-card">
+        <h2>Controllo slide</h2>
+        <div class="slide-preview" id="slide-preview">
+          <div class="sp-type" id="sp-type">—</div>
+          <div class="sp-title" id="sp-title">In attesa…</div>
+          <div class="sp-idx" id="sp-idx"></div>
+        </div>
+        <div class="nav-buttons">
+          <button class="btn-nav" id="btn-prev">◀ Indietro</button>
+          <button class="btn-nav primary" id="btn-next">Avanti ▶</button>
+        </div>
+        <div class="slide-thumbs" id="slide-thumbs"></div>
+      </div>
+
+      <!-- QR code -->
+      <div class="admin-card">
+        <h2>Link partecipanti</h2>
+        <div class="qr-box">
+          <img id="qr-img" src="" alt="QR Code" style="display:none">
+          <p class="qr-url" id="qr-url">Caricamento…</p>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="admin-card">
+        <h2>Statistiche</h2>
+        <div class="stat-row">
+          <span class="stat-label">👥 Partecipanti</span>
+          <span class="stat-value" id="stat-participants">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">📊 Slide corrente</span>
+          <span class="stat-value" id="stat-slide">—</span>
+        </div>
+      </div>
+
+      <!-- Reset -->
+      <div class="admin-card">
+        <h2>Sessione</h2>
+        <button class="btn-danger" id="btn-reset">🔄 Reset sessione</button>
+      </div>
+
+    </div>
+
+    <!-- Right panel: results -->
+    <div class="admin-right" id="admin-right">
+
+      <!-- Per-question results -->
+      <div class="results-grid" id="results-grid">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Profile distribution -->
+      <div class="profiles-card" id="profiles-card">
+        <h2>Distribuzione profili nel gruppo</h2>
+        <div class="profile-dist" id="profile-dist">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/admin.js"></script>
+</body>
+</html>
