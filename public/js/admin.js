@@ -37,10 +37,10 @@ const btnReset       = $('btn-reset');
 
 const COLORS = { A: '#4f46e5', B: '#7c3aed', C: '#0891b2', D: '#059669' };
 const PROFILE_NAMES = {
-  A: '👣 Genitore guida',
-  B: '🤝 Genitore amico',
-  C: '🛡️ Genitore protettivo',
-  D: '🌿 Genitore permissivo',
+  A: '👣 Guida',
+  B: '🤝 Amico',
+  C: '🛡️ Protettivo',
+  D: '🌿 Permissivo',
 };
 
 // ── Login ─────────────────────────────────────────────────────────────────────

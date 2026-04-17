@@ -89,27 +89,17 @@ const slides = [
   {
     type: 'results',
     title: 'Risultati 🎉',
-    profiles: {
-      A: {
-        name: 'Genitore guida',
-        emoji: '👣',
-        description: 'Sai unire regole e ascolto, ma i figli a volte hanno bisogno anche di sbagliare.'
-      },
-      B: {
-        name: 'Genitore amico',
-        emoji: '🤝',
-        description: 'Sei molto vicino ai figli, ma attenzione a mantenere il tuo ruolo educativo.'
-      },
-      C: {
-        name: 'Genitore protettivo',
-        emoji: '🛡️',
-        description: "Ti prendi molta cura, ma prova a lasciare più spazio all'autonomia."
-      },
-      D: {
-        name: 'Genitore permissivo',
-        emoji: '🌿',
-        description: 'Favorisci la libertà, ma i figli hanno bisogno anche di punti di riferimento.'
-      }
+    profiles_genitore: {
+      A: { name: 'Genitore guida',      emoji: '👣', description: 'Sai unire regole e ascolto, ma i figli a volte hanno bisogno anche di sbagliare.' },
+      B: { name: 'Genitore amico',      emoji: '🤝', description: 'Sei molto vicino ai figli, ma attenzione a mantenere il tuo ruolo educativo.' },
+      C: { name: 'Genitore protettivo', emoji: '🛡️', description: "Ti prendi molta cura, ma prova a lasciare più spazio all'autonomia." },
+      D: { name: 'Genitore permissivo', emoji: '🌿', description: 'Favorisci la libertà, ma i figli hanno bisogno anche di punti di riferimento.' }
+    },
+    profiles_animatore: {
+      A: { name: 'Educatore guida',      emoji: '👣', description: 'Sai unire regole e ascolto, ma i ragazzi a volte hanno bisogno anche di sbagliare.' },
+      B: { name: 'Educatore amico',      emoji: '🤝', description: 'Sei molto vicino ai ragazzi, ma attenzione a mantenere il tuo ruolo educativo.' },
+      C: { name: 'Educatore protettivo', emoji: '🛡️', description: "Ti prendi molta cura, ma prova a lasciare più spazio all'autonomia." },
+      D: { name: 'Educatore permissivo', emoji: '🌿', description: 'Favorisci la libertà, ma i ragazzi hanno bisogno anche di punti di riferimento.' }
     }
   }
 ];

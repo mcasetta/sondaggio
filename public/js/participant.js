@@ -163,7 +163,8 @@ function renderResultsSlide(slide) {
   }
 
   const colors = { A: 'var(--a)', B: 'var(--b)', C: 'var(--c)', D: 'var(--d)' };
-  const profile = dominant ? slide.profiles[dominant] : null;
+  const profiles = state.role === 'animatore' ? slide.profiles_animatore : slide.profiles_genitore;
+  const profile = dominant ? profiles[dominant] : null;
 
   const personalHtml = profile ? `
     <div class="result-profile" id="rp-box" style="--profile-color:${colors[dominant]}">
@@ -188,7 +189,7 @@ function renderResultsSlide(slide) {
     <div class="group-results">
       <h3>Il vostro gruppo</h3>
       <div class="profile-bars">
-        ${Object.entries(slide.profiles).map(([l, p]) => {
+        ${Object.entries(profiles).map(([l, p]) => {
           const cnt = groupProfiles[l] || 0;
           const pct = total > 0 ? Math.round(cnt / total * 100) : 0;
           return `
@@ -257,10 +258,11 @@ function attachHandlers(slide) {
     const rpName  = document.getElementById('rp-name');
     const rpDesc  = document.getElementById('rp-desc');
     if (!rpBox) return;
+    const profiles = state.role === 'animatore' ? slide.profiles_animatore : slide.profiles_genitore;
     slideContainer.querySelectorAll('.tally-item').forEach(btn => {
       btn.addEventListener('click', () => {
         const l = btn.dataset.letter;
-        const p = slide.profiles[l];
+        const p = profiles[l];
         rpEmoji.textContent = p.emoji;
         rpName.textContent  = p.name;
         rpDesc.textContent  = p.description;
