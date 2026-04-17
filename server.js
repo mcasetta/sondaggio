@@ -22,7 +22,8 @@ let currentSlide = 0;
 const slides = [
   {
     type: 'text',
-    title: '🎯 Che tipo di genitore/educatore sei?',
+    title_genitore: '🎯 Che tipo di genitore sei?',
+    title_animatore: '🎯 Che tipo di educatore sei?',
     content: 'Cinque domande, nessuna risposta giusta o sbagliata.\n\nScegli per ogni domanda la risposta che più ti rappresenta — quella istintiva, non quella "ideale"!'
   },
   {

@@ -109,9 +109,12 @@ function updateProgress(slide) {
 
 // ── Text slide ────────────────────────────────────────────────────────────────
 function renderTextSlide(slide) {
+  const title = state.role === 'animatore'
+    ? (slide.title_animatore || slide.title)
+    : (slide.title_genitore  || slide.title);
   return `
     <div class="slide-text">
-      <h1 class="slide-title">${escHtml(slide.title)}</h1>
+      <h1 class="slide-title">${escHtml(title)}</h1>
       <p class="slide-content">${escHtml(slide.content).replace(/\n/g, '<br>')}</p>
     </div>`;
 }
