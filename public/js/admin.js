@@ -89,7 +89,7 @@ function buildResultsUI() {
   resultsGrid.innerHTML = surveySlides.map(slide => `
     <div class="q-result-card" id="qcard-${slide.number}">
       <h3>Domanda ${slide.number}</h3>
-      <p class="q-text">${escHtml(slide.question)}</p>
+      <p class="q-text">${escHtml(slide.question_genitore)} / ${escHtml(slide.question_animatore)}</p>
       <div class="bar-chart" id="barchart-${slide.number}">
         ${buildBars(slide.number)}
       </div>
@@ -135,7 +135,7 @@ function buildSlideThumbs() {
   slideThumbs.innerHTML = state.slides.map((s, i) => {
     const label = s.type === 'survey' ? `Q${s.number}` : (s.type === 'results' ? '🎉' : '📄');
     return `<button class="slide-thumb${i === state.currentSlide ? ' active' : ''}"
-      data-idx="${i}" title="${escHtml(s.title || s.question || '')}">${label}</button>`;
+      data-idx="${i}" title="${escHtml(s.title || s.question_genitore || '')}">${label}</button>`;
   }).join('');
   slideThumbs.querySelectorAll('.slide-thumb').forEach(btn => {
     btn.addEventListener('click', () => socket.emit('goto-slide', parseInt(btn.dataset.idx, 10)));
@@ -181,7 +181,7 @@ function updateDashboard() {
   if (slide) {
     const typeLabels = { text: '📄 Testo', survey: `📊 Domanda ${slide.number}`, results: '🎉 Risultati' };
     spType.textContent = typeLabels[slide.type] || slide.type;
-    spTitle.textContent = slide.type === 'survey' ? slide.question : (slide.title || '');
+    spTitle.textContent = slide.type === 'survey' ? slide.question_genitore : (slide.title || '');
     spIdx.textContent = `Slide ${state.currentSlide + 1} di ${total}`;
     statSlide.textContent = typeLabels[slide.type] || '—';
   }

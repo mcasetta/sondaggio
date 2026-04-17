@@ -412,7 +412,19 @@ button:disabled { opacity: 0.55; cursor: not-allowed; }
   gap: 10px;
 }
 
-.profile-bar-label { font-size: 0.9rem; font-weight: 600; }
+.profile-bar-label { font-size: 0.9rem; font-weight: 600; min-width: 130px; }
+
+.profile-bar-label.q-breakdown-letter { min-width: 22px; font-size: 1rem; }
+
+.q-breakdown { margin-top: 16px; }
+.q-breakdown:first-of-type { margin-top: 8px; }
+
+.q-breakdown-title {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
 
 .profile-bar-track {
   width: 80px;

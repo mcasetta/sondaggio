@@ -179,7 +179,7 @@ function renderResultsSlide(slide) {
     </div>`;
 
   // Group profile distribution
-  const { profiles: groupProfiles } = state.results;
+  const { profiles: groupProfiles, byQuestion } = state.results;
   const total = Object.values(groupProfiles).reduce((a, b) => a + b, 0);
   const groupHtml = total > 0 ? `
     <div class="group-results">
@@ -200,11 +200,42 @@ function renderResultsSlide(slide) {
       </div>
     </div>` : '';
 
+  // Per-question breakdown
+  const surveySlides = state.slides.filter(s => s.type === 'survey');
+  const byQuestionHtml = surveySlides.length > 0 && Object.keys(byQuestion).length > 0 ? `
+    <div class="group-results">
+      <h3>Risposte per domanda</h3>
+      ${surveySlides.map(q => {
+        const qCounts = byQuestion[q.number] || { A: 0, B: 0, C: 0, D: 0 };
+        const qMax = Math.max(...Object.values(qCounts), 1);
+        const qText = state.role === 'animatore' ? q.question_animatore : q.question_genitore;
+        return `
+          <div class="q-breakdown">
+            <p class="q-breakdown-title">D${q.number}. ${escHtml(qText)}</p>
+            <div class="profile-bars">
+              ${['A','B','C','D'].map(l => {
+                const cnt = qCounts[l] || 0;
+                const pct = Math.round(cnt / qMax * 100);
+                return `
+                  <div class="profile-bar-row">
+                    <span class="profile-bar-label q-breakdown-letter" style="color:${colors[l]}">${l}</span>
+                    <div class="profile-bar-track">
+                      <div class="profile-bar-fill" style="width:${pct}%;background:${colors[l]}"></div>
+                    </div>
+                    <span class="profile-bar-count">${cnt}</span>
+                  </div>`;
+              }).join('')}
+            </div>
+          </div>`;
+      }).join('')}
+    </div>` : '';
+
   return `
     <div class="slide-results">
       <h1 class="slide-title">${escHtml(slide.title)}</h1>
       ${personalHtml}
       ${groupHtml}
+      ${byQuestionHtml}
     </div>`;
 }
 
